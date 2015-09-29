@@ -16,20 +16,22 @@ fs=1.5; // cylinder circumferential length of each side
 //   | | lock_height
 //   | |
 //   \_/ lock_radius
-lock_offset_y    = 60;
-lock_radius      = 2.5;
+lock_offset_y    = 5;
+lock_radius      = 2.3;
 lock_height      = 8;
 lock_open_radius = 5;
 // thickness of lock portion
-lock_depth       = 4;
+lock_depth       = 3.5;
+// thickness of portion that has to close inside lapdock
+lock_depth_inner = 1.3;
 // padding to allow for the screw head fitting between lock and LCD
-screw_head_depth = 3;
+screw_head_depth = 2.5;
 screw_head_rad   = 3.7;
 lock_pad_x       = 5;
 lock_pad_y       = 5;
 // thickness of the lapdock LCD
 screen_depth     = 7;
-clip_height      = 13;
+clip_height      = 10;
 
 plate_w = 2*lock_open_radius+2*lock_pad_x;
 plate_l = 2*lock_open_radius+lock_height+2*lock_radius+2*lock_pad_y;
@@ -55,17 +57,21 @@ module clip()
 {
     outer_rad = screen_depth/2+lock_depth;
     inner_rad = screen_depth/2;
-    union() {
-        translate([0,plate_l+lock_offset_y,outer_rad]) difference() {
-            rotate([90, 0, 90]) difference() {
-                cylinder($fs=fs, h=plate_w, r=screen_depth/2+lock_depth);
-                translate([0,0,-1]) cylinder($fs=fs, h=plate_w+2, r=inner_rad);
+    difference() {
+        union() {
+            translate([0,plate_l+lock_offset_y,outer_rad]) difference() {
+                rotate([90, 0, 90]) difference() {
+                    cylinder($fs=fs, h=plate_w, r=screen_depth/2+lock_depth);
+                    translate([0,0,-1]) cylinder($fs=fs, h=plate_w+2, r=inner_rad);
+                }
+                translate([-1,-outer_rad,-outer_rad]) cube([plate_w+2, outer_rad, outer_rad*2]);
             }
-            translate([-1,-outer_rad,-outer_rad]) cube([plate_w+2, outer_rad, outer_rad*2]);
+            translate([0, plate_l+lock_offset_y, 2*outer_rad])
+            rotate([180, 0, 0])
+                cube([plate_w, clip_height, lock_depth]);
         }
-        translate([0, plate_l+lock_offset_y, 2*outer_rad])
-        rotate([190, 0, 0]) 
-            cube([plate_w, clip_height, lock_depth]);
+        // cut off the top portion of the clip so the lapdock can close
+        translate([-1, plate_l+lock_pad_y-clip_height-1, outer_rad+inner_rad+lock_depth_inner]) cube([plate_w+2, outer_rad+clip_height+2, lock_depth]);
     }
 }
 
