@@ -24,11 +24,11 @@ lock_radius      = 2.3;
 lock_height      = 8;
 lock_open_radius = 5;
 // thickness of lock portion
-lock_depth       = 3.5;
+lock_depth       = 3.1;
 // thickness of portion that has to close inside lapdock
 lock_depth_inner = 1.3;
 // padding to allow for the screw head fitting between lock and LCD
-screw_head_depth = 2.5;
+screw_head_depth = 1.8;
 screw_head_rad   = 3.7;
 lock_pad_x       = 5;
 lock_pad_y       = 5;
