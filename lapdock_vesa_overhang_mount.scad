@@ -16,7 +16,10 @@ fs=1.5; // cylinder circumferential length of each side
 //   | | lock_height
 //   | |
 //   \_/ lock_radius
-lock_offset_y    = 5;
+
+// V2 has lock_offset_y = 6 for the side bracket, 60 for the top/bottom brackets
+// V3 has lock_offset_y = 2 for the side bracket, 45 for the top/bottom brackets
+lock_offset_y    = 2;
 lock_radius      = 2.3;
 lock_height      = 8;
 lock_open_radius = 5;
@@ -71,7 +74,7 @@ module clip()
                 cube([plate_w, clip_height, lock_depth]);
         }
         // cut off the top portion of the clip so the lapdock can close
-        translate([-1, plate_l+lock_pad_y-clip_height-1, outer_rad+inner_rad+lock_depth_inner]) cube([plate_w+2, outer_rad+clip_height+2, lock_depth]);
+        translate([-1, -1000, outer_rad+inner_rad+lock_depth_inner]) cube([plate_w+2, 2000, lock_depth]);
     }
 }
 
